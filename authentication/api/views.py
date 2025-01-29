@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login
@@ -7,6 +7,7 @@ from authentication.api.serializers import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 @api_view(['POST'])
+@permission_classes([])
 def register(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
@@ -22,9 +23,12 @@ def register(request):
 
 
 @api_view(['POST'])
+@permission_classes([])
 def login_view(request):
     email = request.data.get('email')
     password = request.data.get('password')
+
+    print(email, password, 'data')
 
     user = authenticate(request, username=email, password=password) 
 
